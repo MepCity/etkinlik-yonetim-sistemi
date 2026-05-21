@@ -96,16 +96,3 @@ dotnet test EventHub.Tests/EventHub.Tests.csproj
 
 ---
 
-## Kurs Gereksinimleri Karşılama Durumu
-
-| Gereksinim | Durum |
-|------------|-------|
-| EF Core Code-First + DbContext + Migration | ✅ |
-| ASP.NET Core Identity | ✅ |
-| Role-based yetkilendirme (Admin / User) | ✅ |
-| `_Layout.cshtml` ortak Header/Footer | ✅ |
-| ViewModel kullanımı | ✅ |
-| Data Annotations validasyon | ✅ |
-| Partial View (etkinlik kartları) | ✅ |
-| Kontenjan sınırı ve kontrolü | ✅ |
-| Data Seeding | ✅ |
