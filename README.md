@@ -1,102 +1,111 @@
-# EventHub
+# EventHub — Etkinlik & Workshop Yönetim Sistemi
 
-EventHub is an ASP.NET Core MVC event and workshop management application prepared for a web programming course project. The solution follows a layered structure with separate `DAL`, `BLL`, and `EventHub.Web` projects.
+Bilgisayar Mühendisliği Web Programlama dersi 2. projesi kapsamında geliştirilmiş ASP.NET Core MVC tabanlı etkinlik yönetim uygulaması.
 
-## Scope
+---
 
-The application is being aligned to the course requirement `Etkinlik & Workshop Yonetim Sistemi (EventHub)`.
+## Özellikler
 
-Current functional scope:
+### Kullanıcı
+- Kayıt ol ve giriş yap
+- Tüm etkinlikleri listele ve detaylarını incele
+- Etkinliğe katıl (Join)
+- Kendi katılımlarını listele ve iptal et
+- Kontenjan dolu etkinliklere katılamaz
 
-- Users can register, sign in, browse events, join events, cancel their own bookings, and review their booking list.
-- Admins can create, edit, delete, and review events.
-- Admins can review attendee lists for each event.
-- Event capacity is enforced during booking.
+### Admin / Organizatör
+- Etkinlik oluştur, düzenle, sil
+- Etkinlik başına katılımcı listesini görüntüle
+- Kullanıcı ve rol yönetimi
 
-## Architecture
+---
 
-- `EventHub.Web`: MVC UI, controllers, Razor views, Identity UI
-- `BLL`: business services, mail helpers, attachment helpers
-- `DAL`: Entity Framework Core context, entities, repositories, migrations, seed data
+## Teknoloji Yığını
 
-## Technology Stack
+| Katman | Teknoloji |
+|--------|-----------|
+| Platform | .NET 10, ASP.NET Core MVC |
+| Kimlik Doğrulama | ASP.NET Core Identity |
+| Veritabanı | Entity Framework Core 10, SQLite |
+| Görünüm | Razor Views, Partial Views, Bootstrap 5 |
+| Mimari | 3 Katmanlı (DAL / BLL / Web) |
 
-- .NET 10
-- ASP.NET Core MVC
-- ASP.NET Core Identity
-- Entity Framework Core
-- SQLite
-- Razor Views
+---
 
-## Solution Layout
+## Proje Yapısı
 
-```text
+```
 EventHub.sln
-BLL/
-DAL/
-EventHub.Web/
+├── DAL/                  → DbContext, Entity'ler, Repository'ler, Migration'lar, Seed
+├── BLL/                  → Servisler (Event, Booking, Mail, Attachment)
+├── EventHub.Web/         → Controller'lar, View'lar, ViewModel'lar, Identity UI
+└── EventHub.Tests/       → Unit testler
 ```
 
-## Setup
+---
 
-1. Restore packages:
+## Kurulum ve Çalıştırma
+
+### 1. Paketleri yükle
 
 ```bash
 dotnet restore EventHub.sln
 ```
 
-2. Review the development settings in [appsettings.Development.json](/Users/yasir.arslan/Desktop/Event-Managment-System/EventHub.Web/appsettings.Development.json:1).
-   The default configuration already points to the local SQLite database file `EventHub.Web/eventhub.db`.
-
-3. Apply migrations:
-
-```bash
-dotnet ef database update --project DAL/DAL.csproj --startup-project EventHub.Web/EventHub.Web.csproj
-```
-
-4. Run the web application:
-
-```bash
-dotnet run --project EventHub.Web/EventHub.Web.csproj
-```
-
-## Default Seed Data
-
-The seed routine creates:
-
-- default sample events
-- `Admin` and `User` roles
-- an admin user with email `admin@eventhub.local`
-- admin password `Admin123!`
-
-## Local Verification
-
-Run the web project:
+### 2. Uygulamayı çalıştır
 
 ```bash
 dotnet run --project EventHub.Web/EventHub.Web.csproj --launch-profile http
 ```
 
-Default local URL:
+> Uygulama ilk çalıştığında migration'ları otomatik uygular ve veritabanını seed eder.
 
-- `http://localhost:5079`
+### 3. Tarayıcıda aç
 
-Basic checks:
+```
+http://localhost:5079
+```
 
-- open the login page
-- sign in with `admin@eventhub.local / Admin123!`
-- verify admin event management and attendee listing
-- register a regular user and verify event booking flow
+---
 
-## Tests
+## Varsayılan Kullanıcılar
 
-Run unit tests with:
+| Rol | E-posta | Şifre |
+|-----|---------|-------|
+| Admin | admin@eventhub.local | Admin123! |
+
+Yeni kullanıcılar `/Identity/Account/Register` üzerinden kayıt olabilir. Kayıt olan kullanıcılar otomatik olarak `User` rolüne atanır.
+
+---
+
+## Seed Verisi
+
+Uygulama ilk açılışta şunları otomatik oluşturur:
+
+- 5 örnek etkinlik (farklı kategori ve kontenjanlarla)
+- `Admin` ve `User` rolleri
+- Yukarıdaki admin hesabı
+
+---
+
+## Testler
 
 ```bash
 dotnet test EventHub.Tests/EventHub.Tests.csproj
 ```
 
-## Notes
+---
 
-- `DAL` and `BLL` build successfully in the local environment.
-- If `dotnet build` for `EventHub.Web` hangs in a sandboxed runner, prefer verifying `dotnet run` or running build/test commands with single-node MSBuild settings.
+## Kurs Gereksinimleri Karşılama Durumu
+
+| Gereksinim | Durum |
+|------------|-------|
+| EF Core Code-First + DbContext + Migration | ✅ |
+| ASP.NET Core Identity | ✅ |
+| Role-based yetkilendirme (Admin / User) | ✅ |
+| `_Layout.cshtml` ortak Header/Footer | ✅ |
+| ViewModel kullanımı | ✅ |
+| Data Annotations validasyon | ✅ |
+| Partial View (etkinlik kartları) | ✅ |
+| Kontenjan sınırı ve kontrolü | ✅ |
+| Data Seeding | ✅ |
