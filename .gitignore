@@ -362,3 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Event Managment System/appsettings.json
+
+# SQLite database
+*.db
+*.db-shm
+*.db-wal
