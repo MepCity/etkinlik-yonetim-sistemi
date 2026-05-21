@@ -1,0 +1,44 @@
+@model EventViewModel
+@{
+    var isAdmin = ViewData["isAdmin"] as bool? ?? false;
+}
+
+<div class="col">
+    <div class="card h-100 shadow-sm">
+        <div class="card-header p-0" style="height:130px; overflow:hidden">
+            <img src="@Url.Content(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/default.jpg" : Model.ImageUrl)"
+                 class="card-img-top w-100 h-100 object-fit-cover"
+                 alt="Etkinlik Görseli" />
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text text-muted mb-1">@DateOnly.FromDateTime(Model.StartDate)</p>
+            <p class="card-text text-muted mb-2">@Model.Location</p>
+            <p class="card-text">
+                <span class="badge bg-primary">@Model.Price.ToString("C")</span>
+                <span class="badge bg-info ms-2">@Model.TicketsAvailable kontenjan kaldı</span>
+            </p>
+            <div class="d-flex justify-content-between mt-3">
+                @if (isAdmin)
+                {
+                    <div class="d-flex gap-1">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">Düzenle</a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Sil</a>
+                    </div>
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary">Detay</a>
+                }
+                else
+                {
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary">Detay</a>
+                    <a asp-controller="Booking"
+                       asp-action="@(Model.IsBookedByUser ? "Delete" : "Create")"
+                       asp-route-id="@(Model.IsBookedByUser ? Model.BookingId : Model.Id)"
+                       class="btn @(Model.IsBookedByUser ? "btn-outline-danger" : "btn-outline-success")">
+                        @(Model.IsBookedByUser ? "Kaydı İptal Et" : "Katıl")
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

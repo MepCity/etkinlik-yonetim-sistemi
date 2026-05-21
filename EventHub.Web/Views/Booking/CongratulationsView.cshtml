@@ -1,0 +1,28 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "Katılım Onayı";
+}
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4">Kaydınız Alındı!</h1>
+            <div class="alert alert-success mt-4">
+                <h4>Kayıt Tamamlandı</h4>
+                <p><strong>@Model</strong> etkinliği için kaydınız başarıyla oluşturuldu.</p>
+            </div>
+            <div class="mt-4">
+                <p>Katılımınız için teşekkür ederiz. Etkinlikte sizi görmekten memnuniyet duyarız.</p>
+                <p>5 saniye içinde etkinlik listesine yönlendirileceksiniz.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(function () {
+        window.location.href = '@Url.Action("Index", "Event")';
+    }, 5000); 
+</script>

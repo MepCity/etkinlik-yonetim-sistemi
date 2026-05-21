@@ -1,0 +1,22 @@
+﻿@model Event
+@{
+    ViewData["Title"] = "Etkinliği Sil";
+}
+
+<div class="container py-4">
+    <div class="card shadow">
+        <div class="card">
+            <h1 class="text-center mb-2">@Model.Name etkinliğini silmek istediğinize emin misiniz?</h1>
+        </div>
+
+        <partial name="_DetailsDeletePartialView" model="Model" />
+
+        <div class="py-2 m-auto d-flex gap-2">
+            <form asp-action="DeleteConfirmed" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-danger px-3 py-2">Sil</button>
+            </form>
+            <a class="btn btn-dark px-3 py-2" asp-action="Index">Listeye Dön</a>
+        </div>
+    </div>
+</div>

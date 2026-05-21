@@ -1,0 +1,22 @@
+﻿@model Event
+@{
+    ViewData["Title"] = "Etkinlik Detayı";
+}
+
+<div class="container py-4">
+    <div class="card shadow">
+        <div class="card">
+            <h1 class="text-center  mb-0">@Model.Name</h1>
+        </div>
+
+        <partial name="_DetailsDeletePartialView" model="Model" />
+
+        <div class="py-2 m-auto d-flex gap-2">
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-outline-primary px-3 py-2" asp-action="Attendees" asp-route-id="@Model.Id">Katılımcıları Gör</a>
+            }
+            <a class="btn btn-dark px-3 py-2" asp-action="Index">Listeye Dön</a>
+        </div>
+    </div>
+</div>

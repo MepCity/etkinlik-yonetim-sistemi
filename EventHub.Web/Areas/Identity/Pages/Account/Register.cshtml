@@ -1,0 +1,66 @@
+﻿@page
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h1 class="text-center mb-4">Hesap Oluştur</h1>
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username"
+                                   aria-required="true" placeholder="ornek@eposta.com" />
+                            <label asp-for="Input.Email">E-posta</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control" autocomplete="new-password"
+                                   aria-required="true" placeholder="Şifre" />
+                            <label asp-for="Input.Password">Şifre</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password"
+                                   aria-required="true" placeholder="Şifreyi tekrar girin" />
+                            <label asp-for="Input.ConfirmPassword">Şifre Tekrarı</label>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="Input.PhoneNumber" class="form-control"
+                                   aria-required="true" placeholder="Telefon numarası" />
+                            <label asp-for="Input.PhoneNumber">Telefon</label>
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <button id="registerSubmit" type="submit"
+                                class="btn btn-primary w-100 mb-3 py-2">
+                            Hesap Oluştur
+                        </button>
+
+                        <div class="text-center">
+                            <p class="mb-0">
+                                Zaten hesabınız var mı?
+                                <a asp-page="./Login" class="text-primary text-decoration-none">
+                                    Giriş yapın
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

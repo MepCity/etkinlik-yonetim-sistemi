@@ -1,0 +1,24 @@
+﻿@page
+@model Disable2faModel
+@{
+    ViewData["Title"] = "İki Aşamalı Doğrulamayı Kapat";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h3>@ViewData["Title"]</h3>
+
+<div class="alert alert-warning" role="alert">
+    <p>
+        <strong>Bu işlem yalnızca 2FA'yı kapatır.</strong>
+    </p>
+    <p>
+        2FA'yı kapatmak doğrulayıcı uygulamalarda kullanılan anahtarı değiştirmez. Anahtarı değiştirmek istiyorsanız <a asp-page="./ResetAuthenticator">doğrulayıcı anahtarlarınızı sıfırlayın</a>.
+    </p>
+</div>
+
+<div>
+    <form method="post">
+        <button class="btn btn-danger" type="submit">2FA'yı Kapat</button>
+    </form>
+</div>

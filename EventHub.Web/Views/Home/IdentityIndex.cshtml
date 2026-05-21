@@ -1,0 +1,24 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_IdentityLayout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Yönetim Paneli</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-2 text-center">EventHub Yönetim Paneline Hoş Geldiniz</h1>
+        <p class="text-center">Etkinliklerinizi ve kullanıcı yönetimini buradan kolayca yönetin.</p>
+        <hr />
+        <div class="text-center">
+            <a class="btn btn-primary" asp-controller="User" asp-action="Index">Kullanıcıları Yönet</a>
+            <a class="btn btn-secondary" asp-controller="Role" asp-action="Index">Rolleri Yönet</a>
+        </div>
+    </div>
+</body>
+</html>

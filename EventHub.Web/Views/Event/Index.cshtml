@@ -1,0 +1,28 @@
+﻿@model IEnumerable<EventViewModel>
+@{
+    ViewData["Title"] = "Etkinlikler";
+    var isAdmin = ViewData["isAdmin"] as bool? ?? false;
+}
+
+<h1 class="text-center">Tüm Etkinlikler</h1>
+<hr class="w-25 m-auto" />
+
+<div class="mt-3 container @(isAdmin ? "" : "visually-hidden")">
+    <a asp-action="Create" class="btn btn-primary">Yeni Etkinlik Oluştur</a>
+</div>
+
+@if (Model.Any())
+{
+    <div class="container">
+        <div class="row row-cols-md-3 g-4 mt-3">
+            @foreach (var eventItem in Model)
+            {
+                <partial name="_EventCard" model="eventItem" />
+            }
+        </div>
+    </div>
+}
+else
+{
+    <p class="alert alert-warning">Gösterilecek etkinlik bulunmuyor.</p>
+}

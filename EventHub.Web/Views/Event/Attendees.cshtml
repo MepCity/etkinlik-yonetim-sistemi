@@ -1,0 +1,43 @@
+@model Event
+@{
+    ViewData["Title"] = "Katılımcılar";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">@Model.Name Katılımcıları</h1>
+            <p class="text-muted mb-0">Bu etkinliğe kayıt olan katılımcıları görüntüleyin.</p>
+        </div>
+        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Etkinliğe Dön</a>
+    </div>
+
+    @if (Model.Bookings?.Any() == true)
+    {
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>Katılımcı</th>
+                        <th>Adet</th>
+                        <th>Kayıt Tarihi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model.Bookings.OrderByDescending(booking => booking.BookingDate))
+                    {
+                        <tr>
+                            <td>@booking.CustomerName</td>
+                            <td>@booking.Quantity</td>
+                            <td>@booking.BookingDate.ToString("g")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info mb-0">Bu etkinliğe henüz katılan olmadı.</div>
+    }
+</div>
