@@ -44,7 +44,8 @@ namespace EventHub.Web.Controllers
             var model = new CreateBookingViewModel
             {
                 EventId = id,
-                EventName = eventEntity.Name
+                EventName = eventEntity.Name,
+                EventPrice = eventEntity.Price
             };
 
             return View(model);
