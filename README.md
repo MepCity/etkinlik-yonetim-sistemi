@@ -1,21 +1,23 @@
-# EventHub — Etkinlik & Workshop Yönetim Sistemi
+# EventHub
 
-Bilgisayar Mühendisliği Web Programlama dersi 2. projesi kapsamında geliştirilmiş ASP.NET Core MVC tabanlı etkinlik yönetim uygulaması.
+ASP.NET Core MVC tabanlı etkinlik yönetim ve bilet satış platformu. Kullanıcılar etkinliklere göz atıp bilet satın alabilir; yöneticiler etkinlik, kullanıcı ve rol yönetimini tek panelden yürütür.
+
+**Canlı:** [eventhub-yasir-2026.azurewebsites.net](https://eventhub-yasir-2026.azurewebsites.net)
 
 ---
 
 ## Özellikler
 
-### Kullanıcı
-- Kayıt ol ve giriş yap
-- Tüm etkinlikleri listele ve detaylarını incele
-- Etkinliğe katıl (Join)
-- Kendi katılımlarını listele ve iptal et
-- Kontenjan dolu etkinliklere katılamaz
+**Kullanıcı**
+- Kayıt / giriş
+- Etkinlik listeleme ve detay görüntüleme
+- Bilet satın alma (mock ödeme — Luhn doğrulama)
+- Satın alınan biletleri listeleme ve iptal etme
+- Kontenjanı dolu etkinliklere bilet alınamaz
 
-### Admin / Organizatör
+**Admin**
 - Etkinlik oluştur, düzenle, sil
-- Etkinlik başına katılımcı listesini görüntüle
+- Etkinlik katılımcı listesi
 - Kullanıcı ve rol yönetimi
 
 ---
@@ -25,10 +27,11 @@ Bilgisayar Mühendisliği Web Programlama dersi 2. projesi kapsamında geliştir
 | Katman | Teknoloji |
 |--------|-----------|
 | Platform | .NET 10, ASP.NET Core MVC |
-| Kimlik Doğrulama | ASP.NET Core Identity |
+| Kimlik | ASP.NET Core Identity |
 | Veritabanı | Entity Framework Core 10, SQLite |
-| Görünüm | Razor Views, Partial Views, Bootstrap 5 |
-| Mimari | 3 Katmanlı (DAL / BLL / Web) |
+| Görünüm | Razor Views, Bootstrap 5, SB Admin |
+| CI/CD | GitHub Actions → Azure App Service |
+| Mimari | 3 Katmanlı — DAL / BLL / Web |
 
 ---
 
@@ -36,55 +39,37 @@ Bilgisayar Mühendisliği Web Programlama dersi 2. projesi kapsamında geliştir
 
 ```
 EventHub.sln
-├── DAL/                  → DbContext, Entity'ler, Repository'ler, Migration'lar, Seed
-├── BLL/                  → Servisler (Event, Booking, Mail, Attachment)
-├── EventHub.Web/         → Controller'lar, View'lar, ViewModel'lar, Identity UI
-└── EventHub.Tests/       → Unit testler
+├── DAL/             → DbContext, Entity'ler, Repository'ler, Migration'lar, Seed
+├── BLL/             → Servisler (Event, Booking, Mail, Attachment)
+├── EventHub.Web/    → Controller'lar, View'lar, ViewModel'lar, Identity UI
+└── EventHub.Tests/  → Unit testler
 ```
 
 ---
 
-## Kurulum ve Çalıştırma
-
-### 1. Paketleri yükle
+## Kurulum
 
 ```bash
+# Bağımlılıkları yükle
 dotnet restore EventHub.sln
-```
 
-### 2. Uygulamayı çalıştır
-
-```bash
+# Çalıştır
 dotnet run --project EventHub.Web/EventHub.Web.csproj --launch-profile http
 ```
 
-> Uygulama ilk çalıştığında migration'ları otomatik uygular ve veritabanını seed eder.
+İlk çalışmada migration'lar otomatik uygulanır, seed verisi oluşturulur.
 
-### 3. Tarayıcıda aç
-
-```
-http://localhost:5079
-```
+Varsayılan adres: `http://localhost:5079`
 
 ---
 
-## Varsayılan Kullanıcılar
+## Varsayılan Giriş
 
 | Rol | E-posta | Şifre |
 |-----|---------|-------|
 | Admin | admin@eventhub.local | Admin123! |
 
-Yeni kullanıcılar `/Identity/Account/Register` üzerinden kayıt olabilir. Kayıt olan kullanıcılar otomatik olarak `User` rolüne atanır.
-
----
-
-## Seed Verisi
-
-Uygulama ilk açılışta şunları otomatik oluşturur:
-
-- 5 örnek etkinlik (farklı kategori ve kontenjanlarla)
-- `Admin` ve `User` rolleri
-- Yukarıdaki admin hesabı
+Yeni kullanıcılar `/Identity/Account/Register` üzerinden kayıt olabilir.
 
 ---
 
@@ -96,3 +81,10 @@ dotnet test EventHub.Tests/EventHub.Tests.csproj
 
 ---
 
+## Deploy
+
+`main` branch'e push atıldığında GitHub Actions otomatik olarak Azure App Service'e deploy eder.
+
+```bash
+git push origin main  # → CI/CD tetiklenir → Azure'a deploy olur
+```
