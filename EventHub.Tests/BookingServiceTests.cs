@@ -1,4 +1,4 @@
-using BLL;
+﻿using BLL;
 using DAL.Entities;
 using DAL.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +30,7 @@ public class BookingServiceTests
         var exception = await Assert.ThrowsAsync<Exception>(() =>
             service.Book(1, "user-1", "alice", "alice@example.com", 3));
 
-        Assert.Contains("Only 2 ticket(s) are available", exception.Message);
+        Assert.Contains("yalnızca 2", exception.Message);
     }
 
     [Fact]
@@ -64,7 +64,7 @@ public class BookingServiceTests
         var exception = await Assert.ThrowsAsync<Exception>(() =>
             service.Book(1, "user-1", "alice", "alice@example.com", 1));
 
-        Assert.Equal("You have already joined this event.", exception.Message);
+        Assert.Equal("Bu etkinliğe zaten katıldınız.", exception.Message);
     }
 
     [Fact]
@@ -177,3 +177,4 @@ public class BookingServiceTests
         }
     }
 }
+
