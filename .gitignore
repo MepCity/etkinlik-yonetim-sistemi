@@ -370,3 +370,4 @@ FodyWeavers.xsd
 EventHub.Web/wwwroot/css/styles.css
 publish_output/
 app.zip
+EventHub.Web/eventhub.db
