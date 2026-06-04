@@ -368,3 +368,5 @@ FodyWeavers.xsd
 *.db-shm
 *.db-wal
 EventHub.Web/wwwroot/css/styles.css
+publish_output/
+app.zip
