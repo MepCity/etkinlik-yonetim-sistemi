@@ -367,3 +367,4 @@ FodyWeavers.xsd
 *.db
 *.db-shm
 *.db-wal
+EventHub.Web/wwwroot/css/styles.css
