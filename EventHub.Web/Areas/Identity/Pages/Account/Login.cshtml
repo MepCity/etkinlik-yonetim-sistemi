@@ -5,6 +5,34 @@
     ViewData["Title"] = "Giriş Yap";
 }
 
+<style>
+    body { background: linear-gradient(135deg, #e0f0ff 0%, #f5f9ff 100%); }
+    .clouds-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; }
+    .cloud { position: absolute; background: #fff; border-radius: 50px; opacity: 0.75; animation: float-cloud linear infinite; }
+    .cloud::before, .cloud::after { content: ''; position: absolute; background: #fff; border-radius: 50%; }
+    .cloud::before { width: 60%; height: 180%; top: -50%; left: 15%; }
+    .cloud::after  { width: 40%; height: 140%; top: -30%; right: 15%; }
+    @@keyframes float-cloud {
+        from { transform: translateX(-300px); }
+        to   { transform: translateX(calc(100vw + 300px)); }
+    }
+    .cloud-1 { width: 180px; height: 55px; top: 10%; animation-duration: 28s; animation-delay: 0s; }
+    .cloud-2 { width: 130px; height: 40px; top: 28%; animation-duration: 40s; animation-delay: -10s; }
+    .cloud-3 { width: 220px; height: 65px; top: 50%; animation-duration: 34s; animation-delay: -5s; }
+    .cloud-4 { width: 100px; height: 32px; top: 68%; animation-duration: 45s; animation-delay: -20s; }
+    .cloud-5 { width: 160px; height: 48px; top: 82%; animation-duration: 30s; animation-delay: -15s; }
+    .cloud-6 { width: 200px; height: 60px; top: 38%; animation-duration: 38s; animation-delay: -8s; }
+</style>
+
+<div class="clouds-bg" aria-hidden="true">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="cloud cloud-4"></div>
+    <div class="cloud cloud-5"></div>
+    <div class="cloud cloud-6"></div>
+</div>
+
 <div class="row justify-content-center">
     <div class="container py-5">
         <div class="row justify-content-center">
