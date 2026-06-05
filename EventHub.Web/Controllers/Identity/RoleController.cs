@@ -1,4 +1,4 @@
-﻿using EventHub.Web.Models.Identity.Roles;
+using EventHub.Web.Models.Identity.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -6,22 +6,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventHub.Web.Controllers.Identity
 {
+    // Sistem rollerini (oluşturma, düzenleme, silme) yöneten controller
+    // Yalnızca "Admin" rolüne sahip kullanıcılar bu controller'daki tüm işlemlere erişebilir
     [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
+        // ASP.NET Identity rol yönetimi işlemlerini gerçekleştiren servis
         private readonly RoleManager<IdentityRole> _roleManager;
 
+        // Bağımlılık enjeksiyonu ile RoleManager örneği constructor aracılığıyla alınır
         public RoleController(RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
         }
 
+        // GET: /Role/Index — Sistemdeki tüm rolleri listeler
         public async Task<IActionResult> Index ()
         {
             var roles = await _roleManager.Roles.ToListAsync();
             return View(roles);
         }
 
+        // POST: /Role/Create — Yeni bir rol oluşturur; aynı isimde rol varsa hata mesajı döner
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RoleViewModel model)
@@ -43,12 +49,13 @@ namespace EventHub.Web.Controllers.Identity
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: /Role/Edit/{Id} — Belirtilen rolün düzenleme formunu gösterir; rol bulunamazsa listeye yönlendirir
         [HttpGet]
         public async Task<IActionResult> Edit (string Id)
         {
             var role = await _roleManager.FindByIdAsync(Id);
 
-            
+
             if (role is null)
             {
                 ModelState.AddModelError("Id", "Verilen kimliğe sahip bir rol bulunamadı.");
@@ -65,6 +72,7 @@ namespace EventHub.Web.Controllers.Identity
         }
 
 
+        // POST: /Role/Edit — Rolün adını günceller; aynı isimde başka rol varsa hata mesajı döner
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit (UpdateRoleViewModel model)
@@ -97,6 +105,7 @@ namespace EventHub.Web.Controllers.Identity
 
         }
 
+        // POST: /Role/Delete — Belirtilen rolü sistemden kalıcı olarak siler
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete (string Id)
@@ -104,11 +113,11 @@ namespace EventHub.Web.Controllers.Identity
             var role = await _roleManager.FindByIdAsync(Id);
 
             if (role != null)
-                await _roleManager.DeleteAsync(role); 
+                await _roleManager.DeleteAsync(role);
 
             return RedirectToAction(nameof(Index));
 
-            
+
 
 
         }

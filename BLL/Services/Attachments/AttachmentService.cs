@@ -3,10 +3,14 @@
 
 namespace Services.Attachments
 {
+    // Dosya yükleme ve silme işlemlerini gerçekleştiren servis sınıfı
     public class AttachmentService : IAttachmentService
     {
+        // Yüklenebilir dosya uzantılarının listesi
         private List<string> _allowedExtensions = [".png", ".jpg", ".jpeg"];
+        // İzin verilen maksimum dosya boyutu (10 MB)
         private const int _allowedMaxSize = 10_485_760;
+        // Uzantı ve boyut doğrulaması yaparak dosyayı wwwroot altındaki klasöre kaydeder; geçersizse null döndürür
         public  async Task<string?> UploadAsync(IFormFile file, string folderName)
         {
             // The name of the file with the extension , return the extension with the dot.
@@ -38,6 +42,7 @@ namespace Services.Attachments
             return $"/{folderName}/{fileName}";
         }
 
+        // Verilen dosya yolu mevcutsa dosyayı diskten siler ve true döndürür; yoksa false döndürür
         public bool Delete(string filePath)
         {
             if(File.Exists(filePath))

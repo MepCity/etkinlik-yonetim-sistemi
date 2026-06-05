@@ -1,16 +1,21 @@
-﻿using DAL.Entities;
+using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 
 namespace DAL.Data.Seeds
 {
+    // Uygulama ilk çalıştığında veritabanına örnek etkinlik, rol ve admin kullanıcısı ekleyen tohum veri sınıfı
     public class DataSeeding(ApplicationDbContext applicationDbContext,
                        UserManager<IdentityUser> userManager)
     {
+        // Veritabanı bağlamına erişim sağlayan alan
         private readonly ApplicationDbContext _applicationDbContext = applicationDbContext;
+
+        // Kullanıcı oluşturma ve rol atama işlemleri için kimlik yöneticisi alanı
         private readonly UserManager<IdentityUser> _userManager = userManager;
 
+        // Bekleyen migration'ları uygular, etkinlik/rol/admin verisi yoksa oluşturur
         public async Task SeedData()
         {
             // Checking if there are any pending migrations, migrating if any are found
@@ -20,7 +25,7 @@ namespace DAL.Data.Seeds
             }
 
 
-            
+            // Etkinlik tablosu boşsa örnek etkinlikleri veritabanına ekler
             if (!_applicationDbContext.Events.Any())
             {
                 var events = new List<Event>
@@ -86,6 +91,7 @@ namespace DAL.Data.Seeds
                 _applicationDbContext.SaveChanges();
             }
 
+            // Rol tablosu boşsa Admin ve User rollerini veritabanına ekler
             if (!_applicationDbContext.Roles.Any())
             {
                 var roles = new List<IdentityRole>
@@ -97,12 +103,16 @@ namespace DAL.Data.Seeds
                 _applicationDbContext.SaveChanges();
             }
 
-
+            // Varsayılan admin hesabının e-posta adresi
             const string adminEmail = "admin@eventhub.local";
+
+            // Varsayılan admin hesabının şifresi
             const string adminPassword = "Admin123!";
 
+            // Mevcut admin kullanıcısını e-posta adresine göre sorgular
             var adminUser = await _userManager.FindByEmailAsync(adminEmail);
 
+            // Admin kullanıcısı yoksa oluşturur ve Admin rolüne atar
             if (adminUser == null)
             {
                 adminUser = new IdentityUser

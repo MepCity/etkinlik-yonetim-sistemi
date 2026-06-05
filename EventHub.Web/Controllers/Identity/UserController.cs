@@ -1,4 +1,4 @@
-﻿using EventHub.Web.Models.Identity.Roles;
+using EventHub.Web.Models.Identity.Roles;
 using EventHub.Web.Models.Identity.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,25 +7,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventHub.Web.Controllers.Identity
 {
+    // Kullanıcı listeleme ve kullanıcılara rol atama işlemlerini yöneten controller
+    // Yalnızca "Admin" rolüne sahip kullanıcılar bu controller'daki tüm işlemlere erişebilir
     [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
+        // Kullanıcı sorgulama ve rol atama işlemlerini gerçekleştiren ASP.NET Identity servisi
         private readonly UserManager<IdentityUser> _userManager;
+        // Sistemdeki rolleri sorgulayan ASP.NET Identity rol yönetim servisi
         private readonly RoleManager<IdentityRole> _roleManager;
 
+        // Bağımlılık enjeksiyonu ile UserManager ve RoleManager örnekleri constructor aracılığıyla alınır
         public UserController(UserManager<IdentityUser> userManager , RoleManager<IdentityRole> roleManager)
         {
            _userManager = userManager;
            _roleManager = roleManager;
         }
+
+        // GET: /User/Index — Sistemdeki tüm kullanıcıları ve her birinin atanmış rollerini listeler
         public async Task<IActionResult> Index()
         {
-            var users = await _userManager.Users.ToListAsync(); 
+            var users = await _userManager.Users.ToListAsync();
             var userViewModels = new List<UserViewModel>();
 
             foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user); 
+                var roles = await _userManager.GetRolesAsync(user);
                 userViewModels.Add(new UserViewModel
                 {
                     Id = user.Id,
@@ -39,9 +46,10 @@ namespace EventHub.Web.Controllers.Identity
         }
 
 
+        // GET: /User/Edit/{Id} — Belirtilen kullanıcı için rol atama formunu gösterir; mevcut roller işaretli olarak sunulur
         [HttpGet]
         public async Task<IActionResult> Edit(string Id )
-        
+
         {
             var user = await _userManager.FindByIdAsync(Id);
             if (user is null)
@@ -69,6 +77,7 @@ namespace EventHub.Web.Controllers.Identity
         }
 
 
+        // POST: /User/Edit — Kullanıcının rol atamalarını günceller; seçili roller eklenir, kaldırılan roller çıkarılır
         [HttpPost]
         public async Task<IActionResult> Edit(UserRoleViewModel model)
         {

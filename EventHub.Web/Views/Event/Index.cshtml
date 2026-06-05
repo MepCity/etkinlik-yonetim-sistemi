@@ -1,20 +1,25 @@
-﻿@model IEnumerable<EventViewModel>
+@* Bu sayfa tüm etkinliklerin listelendiği ana görünümdür; model olarak EventViewModel koleksiyonu alır. *@
+@model IEnumerable<EventViewModel>
 @{
     ViewData["Title"] = "Etkinlikler";
+    @* ViewData üzerinden controller'dan gelen isAdmin bayrağını okuyarak admin işlemlerini koşullu göster. *@
     var isAdmin = ViewData["isAdmin"] as bool? ?? false;
 }
 
 <h1 class="text-center">Tüm Etkinlikler</h1>
 <hr class="w-25 m-auto" />
 
+@* Yalnızca admin kullanıcılar için "Yeni Etkinlik Oluştur" butonu gösterilir; diğerleri için gizlenir. *@
 <div class="mt-3 container @(isAdmin ? "" : "visually-hidden")">
     <a asp-action="Create" class="btn btn-primary">Yeni Etkinlik Oluştur</a>
 </div>
 
+@* Modelde etkinlik varsa her biri için _EventCard kısmi görünümünü yükle; yoksa uyarı mesajı göster. *@
 @if (Model.Any())
 {
     <div class="container">
         <div class="row row-cols-md-3 g-4 mt-3">
+            @* Her etkinlik için ayrı bir kart bileşeni (partial view) render edilir. *@
             @foreach (var eventItem in Model)
             {
                 <partial name="_EventCard" model="eventItem" />

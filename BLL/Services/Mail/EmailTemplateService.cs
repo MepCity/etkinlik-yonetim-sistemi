@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Services.Mail
 {
+    // HTML e-posta şablonlarını diskten yükleyen ve yer tutucuları değiştiren yardımcı servis sınıfı
     public class EmailTemplateService
     {
+        // Belirtilen şablon adına göre BLL/EmailTemplates klasöründen HTML dosyasını okur ve içeriğini döndürür
         public string LoadTemplate(string templateName)
         {
             var directory = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName
@@ -20,6 +22,7 @@ namespace Services.Mail
         }
 
 
+        // Şablon metnindeki {{Anahtar}} formatındaki yer tutucuları verilen sözlükteki değerlerle değiştirir
         public string ReplacePlaceholders(string template, Dictionary<string, string> placeholders)
         {
             foreach (var placeholder in placeholders)

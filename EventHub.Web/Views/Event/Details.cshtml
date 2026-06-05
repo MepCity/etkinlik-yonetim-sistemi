@@ -1,4 +1,5 @@
-﻿@model Event
+@* Bu görünüm, tek bir etkinliğin tüm ayrıntılarını gösterir; model olarak Event entity'si alır. *@
+@model Event
 @{
     ViewData["Title"] = "Etkinlik Detayı";
 }
@@ -9,11 +10,14 @@
             <h1 class="text-center  mb-0">@Model.Name</h1>
         </div>
 
+        @* Etkinlik detay ve silme işlemlerini içeren ortak kısmi görünümü yükle. *@
         <partial name="_DetailsDeletePartialView" model="Model" />
 
         <div class="py-2 m-auto d-flex gap-2">
+            @* Yalnızca Admin rolündeki kullanıcılar katılımcı listesine erişebilir. *@
             @if (User.IsInRole("Admin"))
             {
+                @* asp-route-id ile etkinlik kimliğini Attendees action'ına ilet. *@
                 <a class="btn btn-outline-primary px-3 py-2" asp-action="Attendees" asp-route-id="@Model.Id">Katılımcıları Gör</a>
             }
             <a class="btn btn-dark px-3 py-2" asp-action="Index">Listeye Dön</a>

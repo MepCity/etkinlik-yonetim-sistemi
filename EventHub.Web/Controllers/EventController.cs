@@ -1,4 +1,4 @@
-﻿using BLL;
+using BLL;
 using BLL.DTOs;
 using DAL.Entities;
 using EventHub.Web.Models;
@@ -10,8 +10,11 @@ using System.Security.Claims;
 
 namespace EventHub.Web.Controllers
 {
+    // Etkinlik listeleme, oluşturma, düzenleme, silme ve katılımcı görüntüleme işlemlerini yöneten controller
+    // Primary constructor ile bağımlılıklar doğrudan tanımlanır: etkinlik servisi, rezervasyon servisi ve dosya yükleme servisi
     public class EventController(IEventService _eventService, IBookingService _bookingService, IAttachmentService _attachmentService) : Controller
     {
+        // GET: /Event/Index — Tüm etkinlikleri listeler; kullanıcının hangi etkinliğe kayıt yaptırdığını işaretler
         public async Task<IActionResult> Index()
         {
             var events = await _eventService.GetAllEventsAsync();
@@ -41,6 +44,7 @@ namespace EventHub.Web.Controllers
             return View(eventViewModels);
         }
 
+        // GET: /Event/Details/{id} — Belirtilen etkinliğin ayrıntılı bilgilerini gösterir
         public async Task<IActionResult> Details(int id)
         {
             var eventDetails = await _eventService.GetEventByIdAsync(id);
@@ -50,12 +54,14 @@ namespace EventHub.Web.Controllers
             return View(eventDetails);
         }
 
+        // GET: /Event/Create — Yeni etkinlik oluşturma formunu gösterir; yalnızca Admin rolü erişebilir
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
+        // POST: /Event/Create — Formdaki verilerle yeni etkinliği veritabanına kaydeder; yalnızca Admin rolü işlem yapabilir
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
@@ -85,6 +91,7 @@ namespace EventHub.Web.Controllers
             return View(eventModel);
         }
 
+        // GET: /Event/Edit/{id} — Mevcut etkinliğin düzenleme formunu gösterir; yalnızca Admin rolü erişebilir
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
@@ -108,6 +115,7 @@ namespace EventHub.Web.Controllers
             return View(eventModel);
         }
 
+        // POST: /Event/Edit/{id} — Etkinlik bilgilerini günceller; yeni görsel yüklendiyse dosya sistemi de güncellenir; yalnızca Admin rolü işlem yapabilir
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
@@ -142,6 +150,7 @@ namespace EventHub.Web.Controllers
         }
 
 
+        // GET: /Event/Delete/{id} — Silinecek etkinliğin onay sayfasını gösterir; yalnızca Admin rolü erişebilir
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -151,6 +160,7 @@ namespace EventHub.Web.Controllers
             return View(eventDetails);
         }
 
+        // POST: /Event/DeleteConfirmed — Etkinliği ve varsa ilişkili görsel dosyasını kalıcı olarak siler; yalnızca Admin rolü işlem yapabilir
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
@@ -175,6 +185,7 @@ namespace EventHub.Web.Controllers
 
         }
 
+        // GET: /Event/Attendees/{id} — Belirli bir etkinliğe kayıt yaptıran kullanıcıların listesini gösterir; yalnızca Admin rolü erişebilir
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Attendees(int id)
         {

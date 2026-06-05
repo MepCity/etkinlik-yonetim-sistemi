@@ -1,17 +1,21 @@
+@* Bu kısmi görünüm (partial view), tek bir etkinliği Bootstrap kartı olarak render eder. *@
 @model EventViewModel
 @{
+    @* ViewData'dan isAdmin bayrağını okuyarak admin ve normal kullanıcı butonlarını ayırt et. *@
     var isAdmin = ViewData["isAdmin"] as bool? ?? false;
 }
 
 <div class="col">
     <div class="card h-100 shadow-sm">
         <div class="card-header p-0" style="height:130px; overflow:hidden">
+            @* Etkinliğe ait görsel yükle; görsel yoksa varsayılan /images/default.jpg kullanılır. *@
             <img src="@Url.Content(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/default.jpg" : Model.ImageUrl)"
                  class="card-img-top w-100 h-100 object-fit-cover"
                  alt="Etkinlik Görseli" />
         </div>
 
         <div class="card-body">
+            @* Etkinlik adı, tarihi, konumu, fiyatı ve kalan kontenjanı kart gövdesinde göster. *@
             <h5 class="card-title">@Model.Name</h5>
             <p class="card-text text-muted mb-1">@DateOnly.FromDateTime(Model.StartDate)</p>
             <p class="card-text text-muted mb-2">@Model.Location</p>
@@ -20,9 +24,11 @@
                 <span class="badge bg-info ms-2">@Model.TicketsAvailable kontenjan kaldı</span>
             </p>
             <div class="d-flex justify-content-between mt-3">
+                @* Admin ise Düzenle/Sil/Detay butonları; normal kullanıcı ise Detay ve Katıl/İptal butonları göster. *@
                 @if (isAdmin)
                 {
                     <div class="d-flex gap-1">
+                        @* asp-route-id ile etkinlik kimliğini URL parametresi olarak gönder. *@
                         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">Düzenle</a>
                         <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Sil</a>
                     </div>
@@ -31,6 +37,7 @@
                 else
                 {
                     <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary">Detay</a>
+                    @* Kullanıcı zaten kayıtlıysa BookingId ile iptal sayfasına; değilse EventId ile kayıt sayfasına yönlendir. *@
                     <a asp-controller="Booking"
                        asp-action="@(Model.IsBookedByUser ? "Delete" : "Create")"
                        asp-route-id="@(Model.IsBookedByUser ? Model.BookingId : Model.Id)"

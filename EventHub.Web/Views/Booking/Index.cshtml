@@ -1,8 +1,10 @@
-﻿@model IEnumerable<Booking>
+@* Bu görünüm, oturum açmış kullanıcının tüm rezervasyonlarını tablo halinde listeler. *@
+@model IEnumerable<Booking>
 
 <div class="container mt-4">
     <h2>Katıldığım Etkinlikler</h2>
 
+    @* Kullanıcının en az bir rezervasyonu varsa tablo göster; yoksa bilgi mesajı göster. *@
     @if (Model.Any())
     {
         <table class="table table-striped">
@@ -17,6 +19,7 @@
                 </tr>
             </thead>
             <tbody>
+                @* Her rezervasyon için ilgili etkinlik bilgileri ve iptal butonu olan bir tablo satırı oluştur. *@
                 @foreach (var booking in Model)
                 {
                     <tr>
@@ -26,6 +29,7 @@
                         <td class="text-end">@booking.Event.Price.ToString("C")</td>
                         <td class="text-center">@booking.BookingDate.ToShortDateString()</td>
                         <td class="text-center">
+                            @* asp-route-id ile rezervasyon kimliğini Delete action'ına ilet. *@
                             <a asp-action="Delete" asp-route-id="@booking.Id" class="btn btn-outline-danger">
                                 <i class="fas fa-times"></i> İptal Et
                             </a>

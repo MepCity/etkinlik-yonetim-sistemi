@@ -1,3 +1,4 @@
+@* Bu görünüm, bilet satın alma (rezervasyon oluşturma) ödeme formunu render eder. *@
 @model CreateBookingViewModel
 
 @{
@@ -9,6 +10,7 @@
     <p class="text-muted mb-4">Bilet satın almak için ödeme bilgilerinizi girin.</p>
 
     <form method="post" id="paymentForm">
+        @* Gizli alanlar: EventId, EventName ve EventPrice controller'a form verisiyle iletilir. *@
         <input type="hidden" asp-for="EventId" />
         <input type="hidden" asp-for="EventName" />
         <input type="hidden" asp-for="EventPrice" />
@@ -18,12 +20,14 @@
             <div class="card-header fw-semibold">Bilet Bilgisi</div>
             <div class="card-body">
                 <div class="mb-3">
+                    @* asp-for ile Quantity alanını model özelliğine bağla; doğrulama mesajı span ile gösterilir. *@
                     <label asp-for="Quantity" class="form-label"></label>
                     <input asp-for="Quantity" class="form-control" type="number" min="1" id="quantityInput" />
                     <span asp-validation-for="Quantity" class="text-danger small"></span>
                 </div>
                 <div class="d-flex justify-content-between fw-semibold border-top pt-2 mt-2">
                     <span>Toplam Tutar</span>
+                    @* Başlangıçta birim fiyatı göster; JavaScript ile miktar değiştikçe dinamik güncellenir. *@
                     <span id="totalPrice">@Model.EventPrice.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</span>
                 </div>
             </div>
@@ -33,12 +37,14 @@
             <div class="card-header fw-semibold">Kart Bilgileri</div>
             <div class="card-body">
                 <div class="mb-3">
+                    @* Kart sahibi adı alanı; autocomplete="cc-name" tarayıcı otomatik doldurmayı destekler. *@
                     <label asp-for="CardHolderName" class="form-label"></label>
                     <input asp-for="CardHolderName" class="form-control" placeholder="AD SOYAD" autocomplete="cc-name" />
                     <span asp-validation-for="CardHolderName" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
+                    @* Kart numarası alanı; JavaScript ile 4'lü gruplar halinde biçimlendirilir ve Luhn kontrolü yapılır. *@
                     <label asp-for="CardNumber" class="form-label"></label>
                     <div class="input-group">
                         <input asp-for="CardNumber" class="form-control font-monospace"
@@ -46,12 +52,14 @@
                                maxlength="19" autocomplete="cc-number" inputmode="numeric" />
                         <span class="input-group-text" id="cardIcon"><i class="fas fa-credit-card"></i></span>
                     </div>
+                    @* Luhn doğrulama sonucu (geçerli/geçersiz) JavaScript tarafından bu alana yazılır. *@
                     <div id="luhnFeedback" class="small mt-1"></div>
                     <span asp-validation-for="CardNumber" class="text-danger small"></span>
                 </div>
 
                 <div class="row g-3">
                     <div class="col-6">
+                        @* Son kullanma tarihi alanı; JavaScript ile AA/YY formatına otomatik dönüştürülür. *@
                         <label asp-for="ExpiryDate" class="form-label"></label>
                         <input asp-for="ExpiryDate" class="form-control font-monospace"
                                id="expiryInput" placeholder="AA/YY" maxlength="5"
@@ -59,6 +67,7 @@
                         <span asp-validation-for="ExpiryDate" class="text-danger small"></span>
                     </div>
                     <div class="col-6">
+                        @* CVV alanı type="password" ile maskelenir; maksimum 4 hane girilir. *@
                         <label asp-for="Cvv" class="form-label"></label>
                         <input asp-for="Cvv" class="form-control font-monospace"
                                type="password" placeholder="•••" maxlength="4"
@@ -78,6 +87,7 @@
     </form>
 </div>
 
+@* İstemci tarafı doğrulama betikleri ve ödeme formu etkileşim betikleri burada yüklenir. *@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>

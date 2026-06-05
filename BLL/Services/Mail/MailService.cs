@@ -7,15 +7,19 @@ using MailKit.Security;
 
 namespace Services.Mail
 {
+    // SMTP üzerinden HTML e-posta gönderen soyut temel servis sınıfı
     public abstract class MailService : IMailService
     {
+        // appsettings.json'daki MailSettings bölümüne erişim için yapılandırma nesnesi
         private readonly IConfiguration _configuration;
 
+        // Yapılandırmayı constructor üzerinden alır
         public MailService(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        // SMTP bağlantısı kurarak belirtilen alıcıya HTML formatlı e-posta gönderir
         public async Task SendEmailAsync(string to, string subject, string body)
         {
             var email = new MimeMessage();

@@ -1,18 +1,23 @@
-﻿<!DOCTYPE html>
+@* Bu ana düzen dosyası (layout), tüm sayfaların ortak HTML iskeletini tanımlar: navbar, içerik alanı ve footer. *@
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EventHub</title>
+    @* FontAwesome ikonları için CDN bağlantısı; kart ve form ikonlarında kullanılır. *@
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    @* asp-append-version="true" CSS dosyasına cache-busting sorgu parametresi ekler. *@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 </head>
 <body>
     <header>
+        @* Responsive navbar; küçük ekranlarda hamburger menüye dönüşür. *@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
+                @* Ana sayfa bağlantısı olarak çalışan marka logosu/adı. *@
                 <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">EventHub</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -20,9 +25,11 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @* Tüm kullanıcılara görünen Etkinlikler navigasyon bağlantısı. *@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Index">Etkinlikler</a>
                         </li>
+                        @* Yalnızca oturum açmış kullanıcılara "Katıldıklarım" bağlantısı gösterilir. *@
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
@@ -30,12 +37,14 @@
                             </li>
                         }
                     </ul>
+                    @* Giriş/çıkış ve kullanıcı adı gibi kimlik bilgilerini gösteren kısmi görünüm. *@
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
+        @* RenderBody() her sayfanın özgün içeriğini bu alana yerleştirir. *@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -46,9 +55,12 @@
             &copy; 2026 - EventHub - <a asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
         </div>
     </footer>
+    @* Temel JavaScript kütüphaneleri: jQuery, Bootstrap ve site özgün betikleri. *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @* asp-append-version="true" JS dosyasına cache-busting sorgu parametresi ekler. *@
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @* Her sayfanın isteğe bağlı Scripts bölümünü (ör. doğrulama betikleri) buraya yerleştir. *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

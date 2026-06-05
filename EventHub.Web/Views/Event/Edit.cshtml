@@ -1,10 +1,13 @@
-﻿@model CreateEventViewModel
+@* Bu görünüm, mevcut bir etkinliği düzenleme formunu render eder; model olarak CreateEventViewModel alır. *@
+@model CreateEventViewModel
 @{
     ViewData["Title"] = "Etkinliği Düzenle";
 }
 
 <h2>@Model.Name Etkinliğini Düzenle</h2>
+@* enctype="multipart/form-data" yeni görsel yüklemeye izin vermek için gereklidir. *@
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
+    @* Form alanlarını içeren ortak kısmi görünümü yükle; Create ile aynı partial kullanılır. *@
     <partial name="_CreateUpdatePartialView" model="Model" />
 
     <div class="container py-2 m-auto">
@@ -13,6 +16,7 @@
     </div>
 </form>
 
+@* İstemci tarafı doğrulama betiklerini Scripts bölümüne ekle. *@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

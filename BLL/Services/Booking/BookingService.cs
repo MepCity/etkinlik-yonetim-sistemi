@@ -9,18 +9,24 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
+    // Rezervasyon iş kurallarını uygulayan servis sınıfı
     public class BookingService : IBookingService
     {
+        // Rezervasyon verilerine erişim için genel depo
         private readonly IGenericRepository<Booking> _bookingRepository;
+        // Etkinlik verilerine erişim için genel depo
         private readonly IGenericRepository<Event> _eventRepository;
+        // Rezervasyon onay e-postalarını göndermek için kullanılan mail servisi
         private readonly BookingMailService _bookingMailService;
 
+        // Bağımlılıkları constructor üzerinden enjekte eder
         public BookingService(IGenericRepository<Booking> BookingRepository, IGenericRepository<Event> eventRepository, BookingMailService bookingMailService)
         {
             _eventRepository = eventRepository;
             _bookingRepository = BookingRepository;
             _bookingMailService = bookingMailService;
         }
+        // Kontenjan ve tekrar rezervasyon kontrolü yaparak yeni bir rezervasyon kaydı oluşturur ve onay e-postası gönderir
         public async Task Book(int eventId, string userId, string displayName, string email, int quantity)
         {
             // 1. Checking availability of tickets
@@ -73,12 +79,14 @@ namespace BLL
 
         }
 
+        // Belirtilen kimliğe sahip rezervasyonu getirir; bulunamazsa hata fırlatır
         public async Task<Booking> GetBookingById(int bookingId)
         {
             var booking = await _bookingRepository.GetByIdAsync(bookingId);
             return booking ?? throw new Exception("Katılım kaydı bulunamadı.");
         }
 
+        // Rezervasyonu veritabanından silerek iptal eder
         public async Task CancelBooking(int bookingId)
         {
             var booking = await _bookingRepository.GetByIdAsync(bookingId) ?? throw new Exception("Katılım kaydı bulunamadı.");
@@ -86,6 +94,7 @@ namespace BLL
         }
 
 
+        // Belirtilen kullanıcıya ait tüm rezervasyonları filtreler ve döndürür
         public async Task<IEnumerable<Booking>> GetBookingsByUser(string userId)
         {
             if (string.IsNullOrWhiteSpace(userId))

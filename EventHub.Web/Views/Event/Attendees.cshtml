@@ -1,3 +1,4 @@
+@* Bu görünüm, belirli bir etkinliğe kayıt olan tüm katılımcıları tabloda listeler; yalnızca admin erişebilir. *@
 @model Event
 @{
     ViewData["Title"] = "Katılımcılar";
@@ -9,9 +10,11 @@
             <h1 class="h3 mb-1">@Model.Name Katılımcıları</h1>
             <p class="text-muted mb-0">Bu etkinliğe kayıt olan katılımcıları görüntüleyin.</p>
         </div>
+        @* asp-route-id ile etkinlik kimliğini Details action'ına ileterek geri dönüş bağlantısı oluştur. *@
         <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Etkinliğe Dön</a>
     </div>
 
+    @* Etkinliğe en az bir rezervasyon yapılmışsa tablo göster; yoksa bilgi mesajı göster. *@
     @if (Model.Bookings?.Any() == true)
     {
         <div class="table-responsive">
@@ -24,6 +27,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @* Rezervasyonları en yeni tarihten eskiye sırala ve her biri için bir tablo satırı oluştur. *@
                     @foreach (var booking in Model.Bookings.OrderByDescending(booking => booking.BookingDate))
                     {
                         <tr>

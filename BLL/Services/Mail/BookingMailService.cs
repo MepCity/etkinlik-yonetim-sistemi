@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace Services.Mail
 {
+    // Rezervasyon onay e-postası göndermekten sorumlu mail servis sınıfı
     public class BookingMailService : MailService
     {
+        // Temel MailService sınıfına yapılandırmayı iletir
         public BookingMailService(IConfiguration configuration) : base(configuration){}
 
+        // HTML şablon yükleyerek yer tutucuları doldurup kullanıcıya rezervasyon onay e-postası gönderir
         public async Task SendBookingConfirmationAsync(string to, string eventName, string eventDate)
         {
             var templateService = new EmailTemplateService();
